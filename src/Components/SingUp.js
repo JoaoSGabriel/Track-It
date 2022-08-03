@@ -1,9 +1,46 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import logotipo from "../assets/logo.jpeg";
+import axios from "axios";
+import { ThreeDots } from 'react-loader-spinner';
 
 export default function SingUp () {
     const navigate = useNavigate();
+    const [isLoading, setIsLoading] = useState(true);
+
+    const [create_Email, setCreate_Email] = useState('');
+    const [create_Key, setCreate_Key] = useState('');
+    const [create_Name, setCreate_Name] = useState('');
+    const [create_ProfileImg, setCreate_ProfileImg] = useState('');
+    function makeAccount (e) {
+        e.preventDefault();
+        const dataCreate = {
+            email: create_Email,
+            name: create_Name,
+            image: create_ProfileImg,
+            password: create_Key
+        }
+        const promisse = axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up', dataCreate);
+
+        promisse.then((answer) => {
+            setIsLoading(false)
+            setCreate_Email('');
+            setCreate_Key('');
+            setCreate_Name('');
+            setCreate_ProfileImg('');
+            setTimeout(() => {
+                navigate('/')
+            }, 2500);
+        })
+        promisse.catch(() => {
+            setCreate_Email('');
+            setCreate_Key('');
+            setCreate_Name('');
+            setCreate_ProfileImg('');
+            alert('Ops! Parece que não foi possível enviar sua solicitação, tente novamente!');
+        })
+    }
 
     function loginAccount () {
         navigate('/')    
@@ -16,11 +53,13 @@ export default function SingUp () {
                 <p>TrackIt</p>
             </TextTitle>
             <ButtonsLogin>
-                <input placeholder="  email"></input> 
-                <input placeholder="  senha"></input>
-                <input placeholder="  nome"></input> 
-                <input placeholder="  foto"></input>
-                <button>Entrar</button>
+                <form onSubmit={makeAccount}>
+                <input type="email" placeholder="  email" onChange={e => setCreate_Email(e.target.value)} value={create_Email} required></input> 
+                <input type="password" placeholder="  senha" onChange={e => setCreate_Key(e.target.value)} value={create_Key} required></input>
+                <input type="text" placeholder="  nome" onChange={e => setCreate_Name(e.target.value)} value={create_Name} required></input> 
+                <input type="URL" placeholder="  foto" onChange={e => setCreate_ProfileImg(e.target.value)} value={create_ProfileImg} required></input>
+                <button type="submit">{isLoading === true ? 'Cadastrar' : <Loading><ThreeDots color="#FFFFFF" height={45} width={80}/></Loading>}</button>
+                </form>
             </ButtonsLogin>
             <Registration onClick={loginAccount}>Já tem uma conta? Faça login!</Registration>
         </LoginScreen>
@@ -49,9 +88,11 @@ img {
 `;
 
 const ButtonsLogin = styled.div`
-display: flex;
-flex-direction: column;
-width: 100%;
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 input {
     width: 90%;
     height: 45px;
@@ -68,19 +109,26 @@ input:focus{
     outline: 0;
 }
 button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 90%;
     height: 45px;
     border-radius: 5px;
     border: none;
     background-color: #52B6FF;
     margin: 0 auto 25px auto;
-    font-family: 'legend Deca';
+    font-family: 'Lexend Deca';
     font-weight: 400;
     font-size: 20.98px;
     line-height: 26.22px;
     color: #FFFFFF;
     cursor: pointer;
 }
+`;
+
+const Loading = styled.div`
+    width: 80px;
 `;
 
 const Registration = styled.div`

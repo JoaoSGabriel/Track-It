@@ -1,11 +1,43 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import logotipo from "../assets/logo.jpeg";
+import axios from "axios";
+import { ThreeDots } from "react-loader-spinner";
 
 export default function Login () {
     const navigate = useNavigate();
+    const [isLoading, setIsLoading] = useState(true);
 
-    function creatAccount () {
+    const [account_Email, setAccount_Email] = useState('');
+    const [account_Key, setAccount_Key] = useState('');
+
+    function sendLogin (e) {
+        e.preventDefault();
+        const dataLogin = {
+            email: account_Email,
+	        password: account_Key
+        }
+        const promisse = axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login', dataLogin)
+
+        promisse.then((resp) => {
+            setIsLoading(false);
+            console.log(resp.data)
+            setTimeout(() => {
+               navigate('/hoje')
+            }, 2500);
+            setAccount_Email('');
+            setAccount_Key('');
+        })
+
+        promisse.catch(() => {
+            setAccount_Email('');
+            setAccount_Key('');
+            alert('Ops! Algo deu errado com a sua solicitação, tente novamente.')
+        })
+    }
+
+    function createAccount () {
         navigate('/cadastro')    
     }
 
@@ -16,11 +48,13 @@ export default function Login () {
                 <p>TrackIt</p>
             </TextTitle>
             <ButtonsLogin>
-                <input placeholder="  email"></input> 
-                <input placeholder="  senha"></input>
-                <button>Entrar</button>
+                <form onSubmit={sendLogin}>
+                <input type="email" placeholder="  email" onChange={e => setAccount_Email(e.target.value)} value={account_Email} required></input> 
+                <input type="password" placeholder="  senha" onChange={e => setAccount_Key(e.target.value)} value={account_Key} required></input>
+                <button type="submit">{isLoading === true ? 'Entrar' : <Loading><ThreeDots color="#FFFFFF" height={45} width={80}/></Loading>}</button>
+                </form>
             </ButtonsLogin>
-            <Registration onClick={creatAccount}>Não tem uma conta? Cadastre-se!</Registration>
+            <Registration onClick={createAccount}>Não tem uma conta? Cadastre-se!</Registration>
         </LoginScreen>
     );
 }
@@ -47,9 +81,11 @@ img {
 `;
 
 const ButtonsLogin = styled.div`
-display: flex;
-flex-direction: column;
-width: 100%;
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 input {
     width: 90%;
     height: 45px;
@@ -66,19 +102,26 @@ input:focus{
     outline: 0;
 }
 button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 90%;
     height: 45px;
     border-radius: 5px;
     border: none;
     background-color: #52B6FF;
     margin: 0 auto 25px auto;
-    font-family: 'legend Deca';
+    font-family: 'lexend Deca';
     font-weight: 400;
     font-size: 20.98px;
     line-height: 26.22px;
     color: #FFFFFF;
     cursor: pointer;
 }
+`;
+
+const Loading = styled.div`
+    width: 80px;
 `;
 
 const Registration = styled.div`
