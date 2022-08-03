@@ -1,12 +1,14 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import logotipo from "../assets/logo.jpeg";
 import axios from "axios";
 import { ThreeDots } from "react-loader-spinner";
+import UserContext from "./contexts/UserContext";
 
 export default function Login () {
     const navigate = useNavigate();
+    const {setServer_Data} = useContext(UserContext);
     const [isLoading, setIsLoading] = useState(true);
 
     const [account_Email, setAccount_Email] = useState('');
@@ -22,7 +24,7 @@ export default function Login () {
 
         promisse.then((resp) => {
             setIsLoading(false);
-            console.log(resp.data)
+            setServer_Data(resp.data);
             setTimeout(() => {
                navigate('/hoje')
             }, 2500);

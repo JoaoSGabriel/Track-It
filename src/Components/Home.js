@@ -1,10 +1,12 @@
 import styled from "styled-components";
+import Footer from "./GlobalComponents/Footer";
 import Top from "./GlobalComponents/Top";
 
 export default function Home () {
     return (
         <Screen>
             <Top />
+            <Footer/>
         </Screen>
     );
 }
@@ -12,6 +14,6 @@ export default function Home () {
 const Screen = styled.div`
 width: 375px;
 height: 667px;
-background-color: #FFFFFF;
+background-color: #E5E5E5;;
 position: relative;
 `;

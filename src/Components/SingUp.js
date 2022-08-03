@@ -23,7 +23,7 @@ export default function SingUp () {
         }
         const promisse = axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up', dataCreate);
 
-        promisse.then((answer) => {
+        promisse.then(() => {
             setIsLoading(false)
             setCreate_Email('');
             setCreate_Key('');

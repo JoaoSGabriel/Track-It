@@ -1,18 +1,19 @@
+import { useContext } from "react";
 import styled from "styled-components";
+import UserContext from "../contexts/UserContext";
 
 export default function Top () {
-    return (
-        <>
+    const {server_Data} = useContext(UserContext);
+    return(
             <Navbar>
                 <p>TrackIt</p>
-                <img src="" alt="profileimg"/>
+                <img src={server_Data.image} alt="profileimg"/>
             </Navbar>
-        </>
     );
 }
 
 const Navbar = styled.div`
-    width: 375px;
+    width: 100%;
     height: 70px;
     display: flex;
     justify-content: space-between;
