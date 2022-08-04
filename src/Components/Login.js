@@ -26,10 +26,10 @@ export default function Login () {
             setIsLoading(false);
             setServer_Data(resp.data);
             setTimeout(() => {
-               navigate('/hoje')
+                setAccount_Email('');
+                setAccount_Key('');
+                navigate('/hoje')
             }, 2500);
-            setAccount_Email('');
-            setAccount_Key('');
         })
 
         promisse.catch(() => {

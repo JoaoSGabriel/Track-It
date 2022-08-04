@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { CircularProgressbar } from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
 import { useNavigate } from "react-router-dom";
 
 export default function Footer () {
