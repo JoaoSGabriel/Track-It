@@ -25,11 +25,11 @@ export default function SingUp () {
 
         promisse.then(() => {
             setIsLoading(false)
-            setCreate_Email('');
-            setCreate_Key('');
-            setCreate_Name('');
-            setCreate_ProfileImg('');
             setTimeout(() => {
+                setCreate_Email('');
+                setCreate_Key('');
+                setCreate_Name('');
+                setCreate_ProfileImg('');
                 navigate('/')
             }, 2500);
         })

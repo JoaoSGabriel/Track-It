@@ -9,10 +9,11 @@ import History from "../History";
 import { useState } from "react";
 
 export default function App () {
-    const [server_Data, setServer_Data] = useState([])
+    const [server_Data, setServer_Data] = useState([]);
+    const [user_Token, setUser_Token] = useState('');
 
     return (
-        <UserContext.Provider value={{server_Data, setServer_Data}}>
+        <UserContext.Provider value={{server_Data, setServer_Data, user_Token, setUser_Token}}>
             <GlobalStyle />
             <BrowserRouter>
                 <Routes>

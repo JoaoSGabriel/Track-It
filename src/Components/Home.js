@@ -14,6 +14,6 @@ export default function Home () {
 const Screen = styled.div`
 width: 375px;
 height: 667px;
-background-color: #E5E5E5;;
+background-color: #F2F2F2;
 position: relative;
 `;

@@ -8,7 +8,7 @@ import UserContext from "./contexts/UserContext";
 
 export default function Login () {
     const navigate = useNavigate();
-    const {setServer_Data} = useContext(UserContext);
+    const {setServer_Data, setUser_Token} = useContext(UserContext);
     const [isLoading, setIsLoading] = useState(true);
 
     const [account_Email, setAccount_Email] = useState('');
@@ -25,6 +25,7 @@ export default function Login () {
         promisse.then((resp) => {
             setIsLoading(false);
             setServer_Data(resp.data);
+            setUser_Token(resp.data.token);
             setTimeout(() => {
                 setAccount_Email('');
                 setAccount_Key('');
