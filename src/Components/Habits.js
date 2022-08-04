@@ -5,6 +5,7 @@ import { useContext, useEffect, useState } from "react";
 import UserContext from "./contexts/UserContext";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import HabitMenu from "./HabitMenu";
 
 export default function Habits() {
     const {user_Token} = useContext(UserContext);
@@ -28,6 +29,8 @@ export default function Habits() {
         promisse.catch();
     })
 
+    const [create_Habit, setCreate_Habit] = useState(false);
+
     return(
         <Screen>
             <Top />
@@ -35,8 +38,9 @@ export default function Habits() {
             <InnerScreen>
                 <NewHabit>
                     <p>Meus Hábitos</p>
-                    <button>+</button>
+                    <button onClick={() => setCreate_Habit(true)}>+</button>
                 </NewHabit>
+                {create_Habit === false ? '' : <HabitMenu setCreate_Habit={setCreate_Habit}/>}
                 <ListHabits>
                     {habits.length === 0 ? (
                         <p>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</p>
@@ -61,6 +65,9 @@ const InnerScreen = styled.div`
     height: 527px;
     padding: 70px 0 0 0;
     overflow-y: scroll;
+    ::-webkit-scrollbar {
+        display: none;
+    }
 `;
 
 const NewHabit = styled.div`
