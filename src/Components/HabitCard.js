@@ -34,8 +34,8 @@ export default function HabitCard (props) {
     const {user_Token} = useContext(UserContext);
 
     function deleteHabit () {
-        const text = prompt('Tem certeza que gostaria de excluir o hábito? --> sim ou não')
-        if (text === 'sim') {
+        const text = window.confirm('Você tem certeza que gostaria de apagar o hábito?');
+        if (text === true) {
             const promisse = axios.delete(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}`, {
             headers: {
                 Authorization: `Bearer ${user_Token}`

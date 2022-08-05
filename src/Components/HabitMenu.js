@@ -2,11 +2,19 @@ import { useContext, useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import UserContext from "./contexts/UserContext";
+import { ThreeDots } from "react-loader-spinner";
 
 function WeekDay (props) {
-    const {letter, index, arr_Days, setArr_Days} = props;
+    const {letter, index, arr_Days, setArr_Days, able} = props;
     const [is_Select, setIs_Select] = useState(false);
 
+    function canClick () {
+        if (able === false) {
+            selectDay(is_Select);
+        } else {
+            return;
+        }
+    }
     function selectDay (text){
         if (text === true) {
             setIs_Select(!is_Select);
@@ -25,9 +33,9 @@ function WeekDay (props) {
     return(
         <>
         {is_Select === false ? (
-            <p onClick={() => selectDay(is_Select)}>{letter}</p>
+            <p onClick={canClick}>{letter}</p>
         ) : (
-            <h1 onClick={() => selectDay(is_Select)}>{letter}</h1>
+            <h1 onClick={canClick}>{letter}</h1>
         )}
         </>
     );
@@ -36,46 +44,64 @@ function WeekDay (props) {
 const week_Days = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S']
 
 export default function HabitMenu (props) {
-    const {setCreate_Habit} = props;
+    const {create_Habit, setCreate_Habit} = props;
     const {user_Token} = useContext(UserContext);
 
     const [arr_Days, setArr_Days] = useState([]);
     const [habit_Name, setHabit_Name] = useState('');
+    const [able, setAble] = useState(false);
 
-    function sendHabit () {
-        const bodyRequest = {
+    function sendHabit (text) {
+        if (text === false) {
+            setAble(true);
+            const bodyRequest = {
             name: habit_Name,
             days: arr_Days
-        }
-        if (arr_Days.length === 0) {
-            alert('Por favor escolha pelo menos um dia para que possa trackear seu novo hábito!');
-            return;
-        }
-        const promisse = axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits', bodyRequest, {
-            headers: {
-                Authorization: `Bearer ${user_Token}`
             }
-        });
-        promisse.then(() => {
-            setArr_Days([]);
-            setHabit_Name('');
-            setCreate_Habit(false);
-        })
-        promisse.catch();
+            if (arr_Days.length === 0) {
+                alert('Por favor escolha pelo menos um dia para que possa trackear seu novo hábito!');
+                setAble(false);
+                return;
+            }
+            setTimeout(() => {
+                const promisse = axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits', bodyRequest, {
+                headers: {
+                    Authorization: `Bearer ${user_Token}`
+                }
+                });
+                promisse.then(() => {
+                    setArr_Days([]);
+                    setHabit_Name('');
+                    setAble(false);
+                    setCreate_Habit(false);
+                })
+                promisse.catch((resp) => {
+                    setAble(false);
+                    alert(resp);
+                });
+            }, 2500)
+        } else {
+            return
+        }
     }
 
     return(
         <>
+            {create_Habit === false ? '' :
             <Menu>
-                <input type="text" placeholder="  nome do hábito" onChange={e => setHabit_Name(e.target.value)} value={habit_Name}></input>
-                <Days>
-                    {week_Days.map((item, index) => <WeekDay key={index} letter={item} index={index} arr_Days={arr_Days} setArr_Days={setArr_Days}/>)}
-                </Days>
-                <Buttons>
-                    <Cancel onClick={() => setCreate_Habit(false)}>Cancelar</Cancel>
-                    <Save onClick={sendHabit}>Salvar</Save>
-                </Buttons>
-            </Menu>
+            <input type="text" placeholder="  nome do hábito" onChange={e => setHabit_Name(e.target.value)} value={habit_Name} required readOnly={able}></input>
+            <Days>
+                {week_Days.map((item, index) => <WeekDay key={index} letter={item} index={index} arr_Days={arr_Days} setArr_Days={setArr_Days} able={able}/>)}
+            </Days>
+            <Buttons>
+                <Cancel onClick={() => setCreate_Habit(false)}>Cancelar</Cancel>
+                {able === false ? (
+                    <Save onClick={() => sendHabit(able)}>Salvar</Save>
+                ) : (
+                    <Save><Loading><ThreeDots color="#FFFFFF" height={35} width={50}/></Loading></Save>
+                )}
+            </Buttons>
+            </Menu>}
         </>
     );
 }
@@ -98,6 +124,9 @@ const Menu = styled.div`
         font-size: 19.98px;
         line-height: 24.97px;
         color: #DBDBDB;
+    }
+    input:focus{
+    outline: 0;
     }
 `;
 
@@ -175,4 +204,8 @@ const Save = styled.div`
     line-height: 19.97px;
     color: #FFFFFF;
     cursor: pointer;
+`;
+
+const Loading = styled.div`
+    width: 50px;
 `;

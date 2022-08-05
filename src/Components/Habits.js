@@ -41,7 +41,7 @@ export default function Habits() {
                     <p>Meus Hábitos</p>
                     <button onClick={() => setCreate_Habit(true)}>+</button>
                 </NewHabit>
-                {create_Habit === false ? '' : <HabitMenu setCreate_Habit={setCreate_Habit}/>}
+                <HabitMenu create_Habit={create_Habit} setCreate_Habit={setCreate_Habit}/>
                 <ListHabits>
                     {habits.length === 0 ? (
                         <p>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</p>

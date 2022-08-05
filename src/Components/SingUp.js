@@ -13,8 +13,10 @@ export default function SingUp () {
     const [create_Key, setCreate_Key] = useState('');
     const [create_Name, setCreate_Name] = useState('');
     const [create_ProfileImg, setCreate_ProfileImg] = useState('');
+    const [able, setAble] = useState(false);
     function makeAccount (e) {
         e.preventDefault();
+        setAble(true);
         const dataCreate = {
             email: create_Email,
             name: create_Name,
@@ -24,7 +26,7 @@ export default function SingUp () {
         const promisse = axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up', dataCreate);
 
         promisse.then(() => {
-            setIsLoading(false)
+            setIsLoading(false);
             setTimeout(() => {
                 setCreate_Email('');
                 setCreate_Key('');
@@ -38,6 +40,7 @@ export default function SingUp () {
             setCreate_Key('');
             setCreate_Name('');
             setCreate_ProfileImg('');
+            setAble(false);
             alert('Ops! Parece que não foi possível enviar sua solicitação, tente novamente!');
         })
     }
@@ -54,10 +57,10 @@ export default function SingUp () {
             </TextTitle>
             <ButtonsLogin>
                 <form onSubmit={makeAccount}>
-                <input type="email" placeholder="  email" onChange={e => setCreate_Email(e.target.value)} value={create_Email} required></input> 
-                <input type="password" placeholder="  senha" onChange={e => setCreate_Key(e.target.value)} value={create_Key} required></input>
-                <input type="text" placeholder="  nome" onChange={e => setCreate_Name(e.target.value)} value={create_Name} required></input> 
-                <input type="URL" placeholder="  foto" onChange={e => setCreate_ProfileImg(e.target.value)} value={create_ProfileImg} required></input>
+                <input type="email" placeholder="  email" onChange={e => setCreate_Email(e.target.value)} value={create_Email} required readOnly={able}></input> 
+                <input type="password" placeholder="  senha" onChange={e => setCreate_Key(e.target.value)} value={create_Key} required readOnly={able}></input>
+                <input type="text" placeholder="  nome" onChange={e => setCreate_Name(e.target.value)} value={create_Name} required readOnly={able}></input> 
+                <input type="URL" placeholder="  foto" onChange={e => setCreate_ProfileImg(e.target.value)} value={create_ProfileImg} required readOnly={able}></input>
                 <button type="submit">{isLoading === true ? 'Cadastrar' : <Loading><ThreeDots color="#FFFFFF" height={45} width={80}/></Loading>}</button>
                 </form>
             </ButtonsLogin>

@@ -13,9 +13,11 @@ export default function Login () {
 
     const [account_Email, setAccount_Email] = useState('');
     const [account_Key, setAccount_Key] = useState('');
+    const [able, setAble] = useState(false);
 
     function sendLogin (e) {
         e.preventDefault();
+        setAble(true);
         const dataLogin = {
             email: account_Email,
 	        password: account_Key
@@ -36,6 +38,7 @@ export default function Login () {
         promisse.catch(() => {
             setAccount_Email('');
             setAccount_Key('');
+            setAble(false);
             alert('Ops! Algo deu errado com a sua solicitação, tente novamente.')
         })
     }
@@ -52,8 +55,8 @@ export default function Login () {
             </TextTitle>
             <ButtonsLogin>
                 <form onSubmit={sendLogin}>
-                <input type="email" placeholder="  email" onChange={e => setAccount_Email(e.target.value)} value={account_Email} required></input> 
-                <input type="password" placeholder="  senha" onChange={e => setAccount_Key(e.target.value)} value={account_Key} required></input>
+                <input type="email" placeholder="  email" onChange={e => setAccount_Email(e.target.value)} value={account_Email} required readOnly={able}></input> 
+                <input type="password" placeholder="  senha" onChange={e => setAccount_Key(e.target.value)} value={account_Key} required readOnly={able}></input>
                 <button type="submit">{isLoading === true ? 'Entrar' : <Loading><ThreeDots color="#FFFFFF" height={45} width={80}/></Loading>}</button>
                 </form>
             </ButtonsLogin>
