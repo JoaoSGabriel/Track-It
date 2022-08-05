@@ -6,6 +6,7 @@ import UserContext from "./contexts/UserContext";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import HabitMenu from "./HabitMenu";
+import HabitCard from "./HabitCard";
 
 export default function Habits() {
     const {user_Token} = useContext(UserContext);
@@ -45,7 +46,7 @@ export default function Habits() {
                     {habits.length === 0 ? (
                         <p>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</p>
                     ) : (
-                        habits.map(item => <p>{item.name}</p>)
+                        habits.map((item, index) => <HabitCard key={index} id={item.id} name={item.name} days={item.days}/>)
                     )}
                 </ListHabits>
             </InnerScreen>

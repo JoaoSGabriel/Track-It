@@ -47,6 +47,10 @@ export default function HabitMenu (props) {
             name: habit_Name,
             days: arr_Days
         }
+        if (arr_Days.length === 0) {
+            alert('Por favor escolha pelo menos um dia para que possa trackear seu novo hábito!');
+            return;
+        }
         const promisse = axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits', bodyRequest, {
             headers: {
                 Authorization: `Bearer ${user_Token}`
