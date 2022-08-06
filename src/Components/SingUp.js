@@ -4,6 +4,7 @@ import styled from "styled-components";
 import logotipo from "../assets/logo.jpeg";
 import axios from "axios";
 import { ThreeDots } from 'react-loader-spinner';
+import Input from "./Input";
 
 export default function SingUp () {
     const navigate = useNavigate();
@@ -57,10 +58,10 @@ export default function SingUp () {
             </TextTitle>
             <ButtonsLogin>
                 <form onSubmit={makeAccount}>
-                <input type="email" placeholder="  email" onChange={e => setCreate_Email(e.target.value)} value={create_Email} required readOnly={able}></input> 
-                <input type="password" placeholder="  senha" onChange={e => setCreate_Key(e.target.value)} value={create_Key} required readOnly={able}></input>
-                <input type="text" placeholder="  nome" onChange={e => setCreate_Name(e.target.value)} value={create_Name} required readOnly={able}></input> 
-                <input type="URL" placeholder="  foto" onChange={e => setCreate_ProfileImg(e.target.value)} value={create_ProfileImg} required readOnly={able}></input>
+                <Input type="email" placeholder="  email" onChange={e => setCreate_Email(e.target.value)} value={create_Email} required readOnly={able}></Input> 
+                <Input type="password" placeholder="  senha" onChange={e => setCreate_Key(e.target.value)} value={create_Key} required readOnly={able}></Input>
+                <Input type="text" placeholder="  nome" onChange={e => setCreate_Name(e.target.value)} value={create_Name} required readOnly={able}></Input> 
+                <Input type="URL" placeholder="  foto" onChange={e => setCreate_ProfileImg(e.target.value)} value={create_ProfileImg} required readOnly={able}></Input>
                 <button type="submit">{isLoading === true ? 'Cadastrar' : <Loading><ThreeDots color="#FFFFFF" height={45} width={80}/></Loading>}</button>
                 </form>
             </ButtonsLogin>
@@ -95,21 +96,6 @@ form {
     display: flex;
     flex-direction: column;
     align-items: center;
-}
-input {
-    width: 90%;
-    height: 45px;
-    margin: 0 auto 6px auto;
-    border: 1px solid #D4D4D4;
-    border-radius: 5px;
-    font-family: 'Lexend Deca';
-    font-weight: 400;
-    font-size: 19.98px;
-    line-height: 24.97px;
-    color: #DBDBDB;
-}
-input:focus{
-    outline: 0;
 }
 button {
     display: flex;

@@ -5,6 +5,7 @@ import logotipo from "../assets/logo.jpeg";
 import axios from "axios";
 import { ThreeDots } from "react-loader-spinner";
 import UserContext from "./contexts/UserContext";
+import Input from "./Input";
 
 export default function Login () {
     const navigate = useNavigate();
@@ -55,8 +56,8 @@ export default function Login () {
             </TextTitle>
             <ButtonsLogin>
                 <form onSubmit={sendLogin}>
-                <input type="email" placeholder="  email" onChange={e => setAccount_Email(e.target.value)} value={account_Email} required readOnly={able}></input> 
-                <input type="password" placeholder="  senha" onChange={e => setAccount_Key(e.target.value)} value={account_Key} required readOnly={able}></input>
+                <Input type="email" placeholder="  email" onChange={e => setAccount_Email(e.target.value)} value={account_Email} required readOnly={able} background={able}></Input> 
+                <Input type="password" placeholder="  senha" onChange={e => setAccount_Key(e.target.value)} value={account_Key} required readOnly={able} background={able}></Input>
                 <button type="submit">{isLoading === true ? 'Entrar' : <Loading><ThreeDots color="#FFFFFF" height={45} width={80}/></Loading>}</button>
                 </form>
             </ButtonsLogin>
@@ -91,21 +92,6 @@ form {
     display: flex;
     flex-direction: column;
     align-items: center;
-}
-input {
-    width: 90%;
-    height: 45px;
-    margin: 0 auto 6px auto;
-    border: 1px solid #D4D4D4;
-    border-radius: 5px;
-    font-family: 'Lexend Deca';
-    font-weight: 400;
-    font-size: 19.98px;
-    line-height: 24.97px;
-    color: #DBDBDB;
-}
-input:focus{
-    outline: 0;
 }
 button {
     display: flex;

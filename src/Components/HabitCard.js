@@ -90,6 +90,7 @@ const Days = styled.div`
     width: 90%;
     display: flex;
     margin: 0 5%;
+    padding: 0 0 14px 0;
     p {
         width: 30px;
         height: 30px;

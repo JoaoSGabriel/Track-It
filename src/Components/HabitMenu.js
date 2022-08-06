@@ -3,6 +3,7 @@ import styled from "styled-components";
 import axios from "axios";
 import UserContext from "./contexts/UserContext";
 import { ThreeDots } from "react-loader-spinner";
+import Input from "./Input";
 
 function WeekDay (props) {
     const {letter, index, arr_Days, setArr_Days, able} = props;
@@ -89,7 +90,7 @@ export default function HabitMenu (props) {
         <>
             {create_Habit === false ? '' :
             <Menu>
-            <input type="text" placeholder="  nome do hábito" onChange={e => setHabit_Name(e.target.value)} value={habit_Name} required readOnly={able}></input>
+            <Input type="text" placeholder="  nome do hábito" onChange={e => setHabit_Name(e.target.value)} value={habit_Name} required readOnly={able} background={able}></Input>
             <Days>
                 {week_Days.map((item, index) => <WeekDay key={index} letter={item} index={index} arr_Days={arr_Days} setArr_Days={setArr_Days} able={able}/>)}
             </Days>
@@ -109,31 +110,20 @@ export default function HabitMenu (props) {
 const Menu = styled.div`
     width: 90%;
     height: 180px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     border-radius: 5px;
     background-color: #FFFFFF;
+    box-sizing: border-box;
+    padding: 18px 0 0 0;
     margin: 22px auto 0 auto;
-    input {
-        width: 90%;
-        height: 45px;
-        margin: 18px 5% 10px 5%;
-        border: 1px solid #D4D4D4;
-        border-radius: 5px;
-        box-sizing: border-box;
-        font-family: 'Lexend Deca';
-        font-weight: 400;
-        font-size: 19.98px;
-        line-height: 24.97px;
-        color: #DBDBDB;
-    }
-    input:focus{
-    outline: 0;
-    }
 `;
 
 const Days = styled.div`
     width: 90%;
     display: flex;
-    margin: 0 5%;
+    margin: 2px 0 0 0;
     p {
         width: 30px;
         height: 30px;
@@ -171,7 +161,7 @@ const Days = styled.div`
 
 const Buttons = styled.div`
     width: 90%;
-    margin: 30px 5% 0 5%;
+    margin: 30px 0 0 0;
     display: flex;
     align-items: center;
     justify-content: end;
