@@ -8,8 +8,7 @@ import dayjs from "dayjs";
 import confirm from "../assets/Vector.png";
 
 function DailyHabit (props) {
-    const {user_Token, id, name, done, currentSequence, highestSequence} = props;
-    const [interrupt, setInterrupt] = useState(true);
+    const {user_Token, id, name, done, currentSequence, highestSequence, update, setUpdate} = props;
     
     function doneHabit () {
         const promisse = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}/check`, {}, {
@@ -18,7 +17,7 @@ function DailyHabit (props) {
             }
         });
         promisse.then(() => {
-            setInterrupt(!interrupt);
+            setUpdate(!update);
         }).catch(() => {
             alert('Ops, algo deu errado com a sua solicitação');
         });
@@ -31,7 +30,7 @@ function DailyHabit (props) {
             }
         });
         promisse.then(() => {
-            setInterrupt(!interrupt);
+            setUpdate(!update);
         }).catch(() => {
             alert('Ops, algo deu errado com a sua solicitação');
         });
@@ -64,8 +63,7 @@ function DailyHabit (props) {
 }
 
 export default function Home () {
-    const {user_Token} = useContext(UserContext);
-    const [daily_Habits, setDaily_Habits] = useState([]);
+    const {user_Token, daily_Habits, setDaily_Habits} = useContext(UserContext);
     const spreadDays = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
     const [weekDay, setWeekDay] = useState('');
     const [update, setUpdate] = useState(true);
@@ -84,9 +82,10 @@ export default function Home () {
         });
         promisse.then((resp) => {
             setDaily_Habits(resp.data);
+            setUpdate(false);
         });
         promisse.catch();
-    });
+    }, [update]);
 
     return (
         <Screen>
