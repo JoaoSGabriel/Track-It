@@ -2,15 +2,18 @@ import styled from "styled-components";
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import UserContext from "../contexts/UserContext";
 
 export default function Footer () {
     const navigate = useNavigate();
+    const {percentage} = useContext(UserContext);
+    const value = percentage;
 
-    const percentage = 70;
     return(
         <Baseboard>
             <Buttons onClick={() => (navigate('/habitos'))}>Hábitos</Buttons>
-            <EspecialButton onClick={() => (navigate('/hoje'))}><CircularProgressbar value={percentage} text={`Hoje`} styles={{
+            <EspecialButton onClick={() => (navigate('/hoje'))}><CircularProgressbar value={value} text={`Hoje`} styles={{
                 root: {}, 
 
                 path: { stroke: '#FFFFFF', strokeLinecap: 'butt', transition: 'stroke-dashoffset 0.5s ease 0s', transform: 'rotate(0turn)', transformOrigin: 'center center', }, 
@@ -55,4 +58,5 @@ const EspecialButton = styled.div`
     border-radius: 50%;
     padding: 5px;
     margin: 0 0 40px 0;
+    cursor: pointer;
 `;

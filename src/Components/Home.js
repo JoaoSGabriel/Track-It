@@ -5,17 +5,59 @@ import Top from "./GlobalComponents/Top";
 import axios from "axios";
 import UserContext from "./contexts/UserContext";
 import dayjs from "dayjs";
+import confirm from "../assets/Vector.png";
 
 function DailyHabit (props) {
-    const {name, currentSequence, highestSequence} = props;
+    const {user_Token, id, name, done, currentSequence, highestSequence} = props;
+    const [interrupt, setInterrupt] = useState(true);
+    
+    function doneHabit () {
+        const promisse = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}/check`, {}, {
+            headers: {
+                Authorization: `Bearer ${user_Token}`
+            }
+        });
+        promisse.then(() => {
+            setInterrupt(!interrupt);
+        }).catch(() => {
+            alert('Ops, algo deu errado com a sua solicitação');
+        });
+    }
+
+    function deselect () {
+        const promisse = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}/uncheck`, {}, {
+            headers: {
+                Authorization: `Bearer ${user_Token}`
+            }
+        });
+        promisse.then(() => {
+            setInterrupt(!interrupt);
+        }).catch(() => {
+            alert('Ops, algo deu errado com a sua solicitação');
+        });
+    }
+
     return(
         <>
             <Menu>
                 <Text>
                     <p>{name}</p>
-                    <h1>Sequência atual: {currentSequence} dias<br/>Seu recorde: {highestSequence} dias</h1>
+                    {done === false ? (
+                        <h1>Sequência atual: {currentSequence} dias</h1>
+                    ) : (
+                        <h1>Sequência atual: <strong>{currentSequence} dias</strong> </h1>
+                    )}
+                    {currentSequence === highestSequence ? (
+                        <h1>Seu recorde: <strong>{highestSequence} dias</strong></h1>
+                    ) : (
+                        <h1>Seu recorde: {highestSequence} dias</h1>
+                    )}
                 </Text>
-                <button></button>
+                {done === false ? (
+                    <button onClick={doneHabit}><img src={confirm} alt="vector"/></button>
+                ) : (
+                    <Selectbutton onClick={deselect}><img src={confirm} alt="vector"/></Selectbutton>
+                )}
             </Menu>
         </>
     );
@@ -26,13 +68,15 @@ export default function Home () {
     const [daily_Habits, setDaily_Habits] = useState([]);
     const spreadDays = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
     const [weekDay, setWeekDay] = useState('');
-    
+    const [update, setUpdate] = useState(true);
+
     useEffect (() => {
         for (let i = 0; i < spreadDays.length; i = i + 1) {
             if (dayjs().day() === i) {
                 setWeekDay(spreadDays[i]);
             }
         }
+
         const promisse = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today', {
             headers: {
                 Authorization: `Bearer ${user_Token}`
@@ -42,7 +86,8 @@ export default function Home () {
             setDaily_Habits(resp.data);
         });
         promisse.catch();
-    }, []);
+    });
+
     return (
         <Screen>
             <Top />
@@ -51,7 +96,7 @@ export default function Home () {
                     <p>{weekDay}, {(dayjs().format('DD/MM'))}</p>
                     <h1>Nenhum hábito concluído ainda</h1>
                 </Header>
-                {daily_Habits.map((item, index)=> <DailyHabit key={index} name={item.name} currentSequence={item.currentSequence} highestSequence={item.highestSequence}/>)}
+                {daily_Habits.map((item, index)=> <DailyHabit key={index} id={item.id} name={item.name} currentSequence={item.currentSequence} highestSequence={item.highestSequence} user_Token={user_Token} done={item.done} update={update} setUpdate={setUpdate}/>)}
             </InnerScreen>
             <Footer/>
         </Screen>
@@ -111,11 +156,25 @@ const Menu = styled.div`
         border-radius: 5px;
         border: none;
         background-color: #E7E7E7;
+        cursor: pointer;
     }
+`;
+
+const Selectbutton = styled.div`
+    width: 69px;
+    height: 69px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    border: none;
+    background-color: #8FC549;
+    cursor: pointer;
 `;
 
 const Text = styled.div`
     min-height: 69px;
+    padding: 13px 0 17px 0;
     p{
         max-width: 215px;
         font-family: 'Lexend Deca';
@@ -124,7 +183,6 @@ const Text = styled.div`
         line-height: 24.97px;
         color: #666666;
         margin: 0 0 7px 0;
-        padding: 13px 0 0 0;
     }
     h1 {
         font-family: 'Lexend Deca';
@@ -132,6 +190,8 @@ const Text = styled.div`
         font-size: 12.98px;
         line-height: 16.22px;
         color: #666666;
-        padding: 0 0 17px 0;
+    }
+    strong {
+        color: #8FC549;
     }
 `;
