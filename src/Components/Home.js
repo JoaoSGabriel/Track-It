@@ -46,7 +46,7 @@ function DailyHabit (props) {
                     ) : (
                         <h1>Sequência atual: <strong>{currentSequence} dias</strong> </h1>
                     )}
-                    {currentSequence === highestSequence ? (
+                    {currentSequence === highestSequence && highestSequence > 0 ? (
                         <h1>Seu recorde: <strong>{highestSequence} dias</strong></h1>
                     ) : (
                         <h1>Seu recorde: {highestSequence} dias</h1>
