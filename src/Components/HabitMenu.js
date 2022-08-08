@@ -10,15 +10,12 @@ function WeekDay (props) {
     const [is_Select, setIs_Select] = useState(false);
 
     useEffect(() => {
-        if(arr_Days > 0) {
-            for (let i = 0; i < arr_Days.length; i = i + 1) {
-                if(arr_Days[i] === index) {
-                    setIs_Select(true);
-                    console.log('leu aqui')
-                }
+        for (let i = 0; i < arr_Days.length; i = i + 1) {
+            if(arr_Days[i] === index) {
+                setIs_Select(true);
             }
         }
-    },[]);
+    }, []);
 
     function canClick () {
         if (able === false) {
