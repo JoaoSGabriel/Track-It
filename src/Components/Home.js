@@ -46,7 +46,7 @@ function DailyHabit (props) {
                     ) : (
                         <h1>Sequência atual: <strong>{currentSequence} dias</strong> </h1>
                     )}
-                    {currentSequence === highestSequence && highestSequence > 0 ? (
+                    {currentSequence === highestSequence && highestSequence > 0 && done === true ? (
                         <h1>Seu recorde: <strong>{highestSequence} dias</strong></h1>
                     ) : (
                         <h1>Seu recorde: {highestSequence} dias</h1>
@@ -63,7 +63,7 @@ function DailyHabit (props) {
 }
 
 export default function Home () {
-    const {user_Token, daily_Habits, setDaily_Habits} = useContext(UserContext);
+    const {user_Token, daily_Habits, setDaily_Habits, percentage, setPercentage} = useContext(UserContext);
     const spreadDays = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
     const [weekDay, setWeekDay] = useState('');
     const [update, setUpdate] = useState(true);
@@ -85,7 +85,21 @@ export default function Home () {
             setUpdate(false);
         });
         promisse.catch();
+
+        let habitsdone = 0;
+        for (let i = 0; i < daily_Habits.length; i = i + 1) {
+            if (daily_Habits[i].done === true) {
+                habitsdone = habitsdone + 1;
+            }
+        }
+        if (habitsdone > 0) {
+            setPercentage(habitsdone * (1 / daily_Habits.length)*100)
+        }
+        if (habitsdone === 0) {
+            setPercentage(habitsdone);
+        }
     }, [update]);
+    let value = percentage.toFixed();
 
     return (
         <Screen>
@@ -93,7 +107,11 @@ export default function Home () {
             <InnerScreen>
                 <Header>
                     <p>{weekDay}, {(dayjs().format('DD/MM'))}</p>
-                    <h1>Nenhum hábito concluído ainda</h1>
+                    {value > 0 ? (
+                        <h1><strong>{value}% dos hábitos concluídos</strong></h1>
+                    ) : (
+                        <h1>Nenhum hábito concluído ainda</h1>
+                    )}
                 </Header>
                 {daily_Habits.map((item, index)=> <DailyHabit key={index} id={item.id} name={item.name} currentSequence={item.currentSequence} highestSequence={item.highestSequence} user_Token={user_Token} done={item.done} update={update} setUpdate={setUpdate}/>)}
             </InnerScreen>
@@ -135,6 +153,9 @@ const Header = styled.div`
         font-size: 17.98px;
         line-height: 22.47px;
         color: #BABABA;
+    }
+    strong {
+        color: #8FC549;
     }
 `;
 

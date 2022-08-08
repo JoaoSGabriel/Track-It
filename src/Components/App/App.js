@@ -12,9 +12,10 @@ export default function App () {
     const [server_Data, setServer_Data] = useState([]);
     const [daily_Habits, setDaily_Habits] = useState([]);
     const [user_Token, setUser_Token] = useState('');
+    const [percentage, setPercentage] = useState(0);
 
     return (
-        <UserContext.Provider value={{server_Data, setServer_Data, user_Token, setUser_Token, daily_Habits, setDaily_Habits}}>
+        <UserContext.Provider value={{server_Data, setServer_Data, user_Token, setUser_Token, daily_Habits, setDaily_Habits, percentage, setPercentage}}>
             <GlobalStyle />
             <BrowserRouter>
                 <Routes>

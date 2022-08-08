@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import UserContext from "./contexts/UserContext";
@@ -8,6 +8,17 @@ import Input from "./Input";
 function WeekDay (props) {
     const {letter, index, arr_Days, setArr_Days, able} = props;
     const [is_Select, setIs_Select] = useState(false);
+
+    useEffect(() => {
+        if(arr_Days > 0) {
+            for (let i = 0; i < arr_Days.length; i = i + 1) {
+                if(arr_Days[i] === index) {
+                    setIs_Select(true);
+                    console.log('leu aqui')
+                }
+            }
+        }
+    },[]);
 
     function canClick () {
         if (able === false) {
