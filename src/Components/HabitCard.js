@@ -30,7 +30,7 @@ function WeekDayHabit (props) {
 const week_Days = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S']
 
 export default function HabitCard (props) {
-    const {id, name, days} = props;
+    const {id, name, days, setUpdate} = props;
     const {user_Token} = useContext(UserContext);
 
     function deleteHabit () {
@@ -41,7 +41,9 @@ export default function HabitCard (props) {
                 Authorization: `Bearer ${user_Token}`
             }
             });
-            promisse.then().catch();
+            promisse.then(() => {
+                setUpdate(true);
+            }).catch();
         } else {
             return;
         }

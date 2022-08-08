@@ -53,7 +53,7 @@ function WeekDay (props) {
 const week_Days = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S']
 
 export default function HabitMenu (props) {
-    const {create_Habit, setCreate_Habit} = props;
+    const {create_Habit, setCreate_Habit, setUpdate} = props;
     const {user_Token} = useContext(UserContext);
 
     const [arr_Days, setArr_Days] = useState([]);
@@ -82,6 +82,7 @@ export default function HabitMenu (props) {
                     setArr_Days([]);
                     setHabit_Name('');
                     setAble(false);
+                    setUpdate(true);
                     setCreate_Habit(false);
                 })
                 promisse.catch((resp) => {

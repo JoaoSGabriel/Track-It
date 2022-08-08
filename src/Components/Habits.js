@@ -10,6 +10,8 @@ import HabitCard from "./HabitCard";
 
 export default function Habits() {
     const {user_Token} = useContext(UserContext);
+    const [update, setUpdate] = useState(true);
+
     const navigate = useNavigate();
     useEffect (() => {
         if(user_Token === '') {
@@ -26,9 +28,10 @@ export default function Habits() {
         });
         promisse.then((resp) => {
             setHabits(resp.data);
+            setUpdate(false)
         })
         promisse.catch();
-    })
+    }, [update]);
 
     const [create_Habit, setCreate_Habit] = useState(false);
 
@@ -41,12 +44,12 @@ export default function Habits() {
                     <p>Meus Hábitos</p>
                     <button onClick={() => setCreate_Habit(true)}>+</button>
                 </NewHabit>
-                <HabitMenu create_Habit={create_Habit} setCreate_Habit={setCreate_Habit}/>
+                <HabitMenu create_Habit={create_Habit} setCreate_Habit={setCreate_Habit} setUpdate={setUpdate}/>
                 <ListHabits>
                     {habits.length === 0 ? (
                         <p>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</p>
                     ) : (
-                        habits.map((item, index) => <HabitCard key={index} id={item.id} name={item.name} days={item.days}/>)
+                        habits.map((item, index) => <HabitCard key={index} id={item.id} name={item.name} days={item.days} setUpdate={setUpdate}/>)
                     )}
                 </ListHabits>
             </InnerScreen>
